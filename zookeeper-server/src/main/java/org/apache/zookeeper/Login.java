@@ -78,7 +78,10 @@ public class Login {
     private String loginContextName = null;
     private String principal = null;
 
-    // Initialize 'lastLogin' to do a login at first time
+    private String kerberosDomain = null;
+  
+
+	// Initialize 'lastLogin' to do a login at first time
     private long lastLogin = Time.currentElapsedTime() - MIN_TIME_BEFORE_RELOGIN;
     private final ZKConfig zkConfig;
 
@@ -118,6 +121,10 @@ public class Login {
             if (entry.getOptions().get("principal") != null) {
                 principal = (String)entry.getOptions().get("principal");
             }
+            if (entry.getOptions().get("kerberosDomain") != null) {
+            	kerberosDomain = (String)entry.getOptions().get("kerberosDomain");
+            }
+            
             break;
         }
 
@@ -419,4 +426,7 @@ public class Login {
             setLogin(login);
         }
     }
+    public String getKerberosDomain() {
+  		return kerberosDomain;
+  	}
 }

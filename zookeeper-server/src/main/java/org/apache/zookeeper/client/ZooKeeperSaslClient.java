@@ -253,7 +253,7 @@ public class ZooKeeperSaslClient {
                 }
             }
             return SecurityUtils.createSaslClient(login.getSubject(),
-                    servicePrincipal, "zookeeper", "zk-sasl-md5", LOG, "Client");
+                    servicePrincipal, login.getKerberosDomain(),"zookeeper", "zk-sasl-md5", LOG, "Client");
         } catch (LoginException e) {
             // We throw LoginExceptions...
             throw e;

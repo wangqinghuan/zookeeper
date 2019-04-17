@@ -29,6 +29,7 @@ import javax.security.sasl.SaslClient;
 import javax.security.sasl.SaslException;
 import javax.security.sasl.SaslServer;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.zookeeper.SaslClientCallbackHandler;
 import org.apache.zookeeper.server.auth.KerberosName;
 import org.ietf.jgss.GSSContext;
@@ -57,7 +58,7 @@ public final class SecurityUtils {
      * @throws SaslException
      */
     public static SaslClient createSaslClient(final Subject subject,
-            final String servicePrincipal, final String protocol,
+            final String servicePrincipal, final String kerberosDomain,final String protocol,
             final String serverName, final Logger LOG, final String entity) throws SaslException {
         SaslClient saslClient;
         // Use subject.getPrincipals().isEmpty() as an indication of which SASL
@@ -115,7 +116,7 @@ public final class SecurityUtils {
             KerberosName serviceKerberosName = new KerberosName(
                     servicePrincipal + "@" + serverRealm);
             final String serviceName = serviceKerberosName.getServiceName();
-            final String serviceHostname = serviceKerberosName.getHostName();
+            final String serviceHostname = StringUtils.isEmpty(kerberosDomain)? serviceKerberosName.getHostName():kerberosDomain;
             final String clientPrincipalName = clientKerberosName.toString();
             try {
                 saslClient = Subject.doAs(subject,
